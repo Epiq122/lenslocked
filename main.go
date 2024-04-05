@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"path/filepath"
 
+	"github.com/epiq122/lenslocked/controllers"
 	"github.com/epiq122/lenslocked/views"
 	"github.com/go-chi/chi/v5"
 )
@@ -18,12 +19,6 @@ func exectuteTemplate(w http.ResponseWriter, filepath string) {
 
 	}
 	tpl.Execute(w, nil)
-}
-
-func homeHandler(w http.ResponseWriter, _ *http.Request) {
-	tplPath := filepath.Join("templates", "home.tmpl")
-	exectuteTemplate(w, tplPath)
-
 }
 
 func contactHandler(w http.ResponseWriter, _ *http.Request) {
@@ -40,7 +35,13 @@ func faqHandler(w http.ResponseWriter, _ *http.Request) {
 
 func main() {
 	r := chi.NewRouter()
-	r.Get("/", homeHandler)
+	homeTpl, err := views.Parse(filepath.Join("templates", "home.tmpl"))
+	if err != nil {
+		panic(err)
+	}
+	r.Method(http.MethodGet, "/", controllers.Static{
+		Template: homeTpl,
+	})
 	r.Get("/contact", contactHandler)
 	r.Get("/faq", faqHandler)
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
