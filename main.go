@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -9,7 +11,19 @@ import (
 
 func homeHandler(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprint(w, "<h1>Welcome to the danger zones!</h1>")
+	tpl, err := template.ParseFiles("templates/home.tmpl")
+	if err != nil {
+		log.Printf("parsing template: %v", err)
+		http.Error(w, "there was a error parsing the template", http.StatusInternalServerError)
+
+	}
+	err = tpl.Execute(w, nil)
+	if err != nil {
+		log.Printf("parsing template: %v", err)
+		http.Error(w, "there was a error parsing the template", http.StatusInternalServerError)
+
+	}
+
 }
 
 func contactHandler(w http.ResponseWriter, _ *http.Request) {
