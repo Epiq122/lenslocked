@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func handlerFunc(w http.ResponseWriter, _ *http.Request) {
+func homeHandler(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	fmt.Fprint(w, "<h1>Welcome to the danger zones!</h1>")
 }
@@ -20,7 +20,7 @@ type Router struct{}
 func (r Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	switch req.URL.Path {
 	case "/":
-		handlerFunc(w, req)
+		homeHandler(w, req)
 	case "/contact":
 		contactHandler(w, req)
 	default:
@@ -29,7 +29,8 @@ func (r Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	r := Router{}
-	fmt.Println("Starting server on port :3000...")
-	http.ListenAndServe(":3000", r)
+	var router Router
+	fmt.Println("Starting the server on :3000...")
+	http.ListenAndServe(":3000", router)
+
 }
