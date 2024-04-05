@@ -5,13 +5,14 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
 )
 
-func homeHandler(w http.ResponseWriter, _ *http.Request) {
+func exectuteTemplate(w http.ResponseWriter, filepath string) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	tpl, err := template.ParseFiles("templates/home.tmpl")
+	tpl, err := template.ParseFiles(filepath)
 	if err != nil {
 		log.Printf("parsing template: %v", err)
 		http.Error(w, "there was a error parsing the template", http.StatusInternalServerError)
@@ -23,23 +24,17 @@ func homeHandler(w http.ResponseWriter, _ *http.Request) {
 		http.Error(w, "there was a error parsing the template", http.StatusInternalServerError)
 
 	}
+}
+
+func homeHandler(w http.ResponseWriter, _ *http.Request) {
+	tplPath := filepath.Join("templates", "home.tmpl")
+	exectuteTemplate(w, tplPath)
 
 }
 
 func contactHandler(w http.ResponseWriter, _ *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	tpl, err := template.ParseFiles("templates/contact.tmpl")
-	if err != nil {
-		log.Printf("parsing template: %v", err)
-		http.Error(w, "there was a error parsing the template", http.StatusInternalServerError)
-
-	}
-	err = tpl.Execute(w, nil)
-	if err != nil {
-		log.Printf("parsing template: %v", err)
-		http.Error(w, "there was a error parsing the template", http.StatusInternalServerError)
-
-	}
+	tplPath := filepath.Join("templates", "contact.tmpl")
+	exectuteTemplate(w, tplPath)
 
 }
 
@@ -64,21 +59,6 @@ func faqHandler(w http.ResponseWriter, _ *http.Request) {
 
 }
 
-func exectuteTemplate(w http.ResponseWriter, filepath string) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	tpl, err := template.ParseFiles(filepath)
-	if err != nil {
-		log.Printf("parsing template: %v", err)
-		http.Error(w, "there was a error parsing the template", http.StatusInternalServerError)
-
-	}
-	err = tpl.Execute(w, nil)
-	if err != nil {
-		log.Printf("parsing template: %v", err)
-		http.Error(w, "there was a error parsing the template", http.StatusInternalServerError)
-
-	}
-}
 func main() {
 	r := chi.NewRouter()
 	r.Get("/", homeHandler)
