@@ -9,6 +9,20 @@
       href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
       rel="stylesheet"
     />
+
+    <style>
+      /* Adjust the body to make it flex and take full height */
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      /* Style for the footer */
+      .footer {
+        margin-top: auto; /* Push the footer to the bottom */
+      }
+    </style>
   </head>
   <body>
     <header class="bg-gradient-to-r from-blue-800 to-indigo-800 text-white">
@@ -41,6 +55,13 @@
     {{ end }}
 
     {{define "footer"}}
+    <footer
+      class="footer bg-gradient-to-r from-blue-800 to-indigo-800 text-white py-4"
+    >
+      <div class="container mx-auto text-center">
+        <p>&copy; 2024 Robert Gleason</p>
+      </div>
+    </footer>
   </body>
 </html>
 {{ end }}
