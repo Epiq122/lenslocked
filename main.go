@@ -12,11 +12,11 @@ import (
 
 func main() {
 	r := chi.NewRouter()
-	tpl := views.Must(views.ParseFS(templates.FS, "home.tmpl"))
-	r.Get("/", controllers.StaticHandler(tpl))
+	r.Get("/", controllers.StaticHandler(
+		views.Must(views.ParseFS(templates.FS, "layout-page.tmpl", "home-page.tmpl"))))
 
 	r.Get("/contact", controllers.StaticHandler(
-		views.Must(views.ParseFS(templates.FS, "contact.tmpl"))))
+		views.Must(views.ParseFS(templates.FS, "layout-page.tmpl", "contact-page.tmpl"))))
 
 	r.Get("/faq", controllers.FAQ(
 		views.Must(views.ParseFS(templates.FS, "faq.tmpl"))))
