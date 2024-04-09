@@ -1,14 +1,16 @@
 package controllers
 
 import (
-	"github.com/epiq122/lenslocked/views"
-
 	"net/http"
 )
 
+type Template interface {
+	Execute(w http.ResponseWriter, data interface{})
+}
+
 type Users struct {
 	Templates struct {
-		New views.Template
+		New Template
 	}
 }
 
