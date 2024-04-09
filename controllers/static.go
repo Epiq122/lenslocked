@@ -1,17 +1,16 @@
 package controllers
 
 import (
+	"github.com/epiq122/lenslocked/views"
 	"html/template"
 	"net/http"
-
-	"github.com/epiq122/lenslocked/views"
 )
 
 type Static struct {
-	Template views.Template
+	Template Template
 }
 
-func (static Static) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (static Static) ServeHTTP(w http.ResponseWriter, _ *http.Request) {
 	static.Template.Execute(w, nil)
 }
 
